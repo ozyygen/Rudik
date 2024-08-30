@@ -52,59 +52,11 @@
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.8.1</version>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>3.3</version>
-        <configuration>
-          <reportPlugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-project-info-reports-plugin</artifactId>
-              <version>2.7</version>
-              <reportSets>
-                <reportSet>
-                  <reports>
-                    <report>dependencies</report>
-                    <report>project-team</report>
-                    <report>license</report>
-                  </reports>
-                </reportSet>
-              </reportSets>
-            </plugin>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-javadoc-plugin</artifactId>
-              <version>2.9.1</version>
-              <reportSets>
-                <reportSet>
-                  <id>default</id>
-                  <reports>
-                    <report>javadoc</report>
-                  </reports>
-                </reportSet>
-              </reportSets>
-            </plugin>
-          </reportPlugins>
         </configuration>
       </plugin>
       <plugin>
@@ -120,7 +72,7 @@
               <transformers>
                 <transformer />
                 <transformer>
-                  <mainClass>asu.edu.rule_miner.rudik.Rudik2_simpleClustering</mainClass>
+                  <mainClass>asu.edu.rule_miner.rudik.App_2</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -146,13 +98,13 @@
     <dependency>
       <groupId>org.apache.jena</groupId>
       <artifactId>apache-jena-libs</artifactId>
-      <version>3.0.1</version>
+      <version>4.3.1</version>
       <type>pom</type>
       <scope>compile</scope>
     </dependency>
   </dependencies>
   <properties>
-    <mainClass>asu.edu.rule_mine.rudik.Rudik2_simpleClustering</mainClass>
+    <mainClass>asu.edu.rule_mine.rudik.App_2</mainClass>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>

@@ -82,7 +82,7 @@ public class VariancePopularSampling {
 				values.add(0.0);
 	*/		diversePopularity.put(label, values);
 		}
-		toReturn.add(new Double(diversePopularity.keySet().size())); //added diversity as the number of relations an entity is connected to
+		toReturn.add((double) diversePopularity.keySet().size()); //added diversity as the number of relations an entity is connected to
 		Collection<ArrayList<Double>> valueSet = diversePopularity.values();
 		double aggPopularity = 0.0, aggInverseFunctionality = 0.0;
 		for(ArrayList<Double> values : valueSet){
