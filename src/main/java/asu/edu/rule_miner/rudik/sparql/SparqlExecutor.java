@@ -571,7 +571,7 @@ public abstract class SparqlExecutor {
   }
   public ResultSet executeSparqlQuery(String queryStr) {
     Query query = QueryFactory.create(queryStr);
-    try (QueryExecution qexec = QueryExecutionFactory.sparqlService("http://ontotext:7200/repositories/personWikidata", query)) {
+    try (QueryExecution qexec = QueryExecutionFactory.sparqlService("http://localhost:7200/repositories/personWikidata", query)) {
       return qexec.execSelect();
     }
   }
@@ -582,7 +582,7 @@ public abstract class SparqlExecutor {
       return null;
     }
 
-    // Create the RDF
+    // Create the RDF filter strings
     final StringBuilder filterRelation = new StringBuilder();
     final StringBuilder filterNotRelation = new StringBuilder();
     final StringBuilder differentRelation = new StringBuilder();
@@ -593,31 +593,25 @@ public abstract class SparqlExecutor {
       targetRelation = relationIteratorTar.next();
       break;
     }
-    while(relationIterator.hasNext()){
+    while (relationIterator.hasNext()) {
       final String currentRelation = relationIterator.next();
-      filterRelation.append("?targetRelation = <"+currentRelation+">");
-      filterNotRelation.append("?otherRelation != <"+currentRelation+">");
-      if(relationIterator.hasNext()){
+      filterRelation.append("?targetRelation = <" + currentRelation + ">");
+      filterNotRelation.append("?otherRelation != <" + currentRelation + ">");
+      if (relationIterator.hasNext()) {
         filterRelation.append(" || ");
         filterNotRelation.append(" && ");
       }
-      differentRelation.append("  FILTER NOT EXISTS {?subject <"+currentRelation+"> ?object.} ");
+      differentRelation.append("  FILTER NOT EXISTS {?subject <" + currentRelation + "> ?object.} ");
     }
 
-
-
-    // Initial Query to Fetch Top 2 Types (Assuming this step is done externally)
-    // String subjectType1 = "SubjectType1"; // Replace with actual type result from typeQuery
-    // String subjectType2 = "SubjectType2"; // Replace with actual type result from typeQuery
-    // String objectType1 = "ObjectType1"; // Replace with actual type result from typeQuery
-    // String objectType2 = "ObjectType2"; // Replace with actual type result from typeQuery
+    // Initial Query to Fetch Top 2 Types
     String typeQuery = "";
     if (this.prefixQuery != null && this.prefixQuery.size() > 0) {
       for (final String prefix : this.prefixQuery) {
         typeQuery += prefix + " ";
       }
     }
-    System.out.println("Type query started");
+
     typeQuery +=
             "SELECT ?subjectType ?objectType (COUNT(*) AS ?count) WHERE { " +
                     " ?subject <" + targetRelation + "> ?object. " +
@@ -626,99 +620,107 @@ public abstract class SparqlExecutor {
                     "} GROUP BY ?subjectType ?objectType " +
                     "ORDER BY DESC(?count) LIMIT 2";
 
-// Execute the typeQuery
+    System.out.println("Type query started"+typeQuery);
+    // Execute the typeQuery
     ResultSet resultSet = executeSparqlQuery(typeQuery);
-
-// Initialize the type variables
+    System.out.println("Type query ended");
+    // Initialize the type variables
     String subjectType1 = null;
     String subjectType2 = null;
     String objectType1 = null;
     String objectType2 = null;
 
     int count = 0;
-    if (!resultSet.hasNext()) {
-      System.out.println("No results found.");
-      // Handle the case when there are no results, maybe assign default types or exit
-      subjectType1 = "DefaultSubjectType1";
-      subjectType2 = "DefaultSubjectType2";
-      objectType1 = "DefaultObjectType1";
-      objectType2 = "DefaultObjectType2";
-    } else {
-      while (resultSet.hasNext()) {
-        QuerySolution solution = resultSet.nextSolution();
-
-        if (count == 0) {
-          subjectType1 = solution.getResource("subjectType").toString();
-          objectType1 = solution.getResource("objectType").toString();
-        } else if (count == 1) {
-          subjectType2 = solution.getResource("subjectType").toString();
-          objectType2 = solution.getResource("objectType").toString();
-        }
-        count++;
+    while (resultSet.hasNext()) {
+      QuerySolution solution = resultSet.nextSolution();
+      if (count == 0) {
+        subjectType1 = solution.getResource("subjectType").toString();
+        objectType1 = solution.getResource("objectType").toString();
+      } else if (count == 1) {
+        subjectType2 = solution.getResource("subjectType").toString();
+        objectType2 = solution.getResource("objectType").toString();
+      }
+      count++;
+    }
+    String relConQuery = "";
+    if (this.prefixQuery != null && this.prefixQuery.size() > 0) {
+      for (final String prefix : this.prefixQuery) {
+        relConQuery += prefix + " ";
       }
     }
 
-// Print out the types to verify
-    System.out.println("subjectType1: " + subjectType1);
-    System.out.println("subjectType2: " + subjectType2);
-    System.out.println("objectType1: " + objectType1);
-    System.out.println("objectType2: " + objectType2);
 
-    System.out.println("Type query ended");
-// Ensure the variables are not null before proceeding
-    if (subjectType1 == null || subjectType2 == null || objectType1 == null || objectType2 == null) {
-      throw new IllegalStateException("Failed to retrieve subject or object types from typeQuery.");
+    relConQuery   += "SELECT reduced ?relatedRelation1 ?relatedRelation2 (COUNT(*) AS ?relationCount)\n" +
+            "WHERE {" +
+            "  BIND(<" + targetRelation + "> AS ?targetRelation)\n " +
+            "  ?subject ?targetRelation ?object .\n" +
+            "  ?subject ?relatedRelation1 ?object .\n" +
+            "  ?subject ?relatedRelation2 ?object .\n" +
+            "  FILTER(?relatedRelation1 != ?targetRelation)\n" +
+            "  FILTER(?relatedRelation2 != ?targetRelation)\n" +
+            "  FILTER(?relatedRelation1 != ?relatedRelation2)}\n" +
+            "GROUP BY ?relatedRelation1 ?relatedRelation2\n" +
+            "ORDER BY DESC(?relationCount)\n " +
+            "LIMIT 1";
+    System.out.println("Related connections query started"+relConQuery);
+    // Execute the typeQuery
+    ResultSet resulRelSet = executeSparqlQuery(relConQuery);
+    System.out.println("Related connections query ended");
+    String related1 = null;
+    String related2 = null;
+
+    while (resulRelSet.hasNext()) {
+      QuerySolution solution = resulRelSet.nextSolution();
+      related1 = solution.getResource("relatedRelation1").toString();
+      related2 = solution.getResource("relatedRelation2").toString();
+
     }
-
-
+    // Construct the main query using the types retrieved
     StringBuilder negativeCandidateQuery = new StringBuilder();
     negativeCandidateQuery.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ")
             .append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> ")
             .append("PREFIX wdt: <http://www.wikidata.org/prop/direct/> ")
             .append("PREFIX wd: <http://www.wikidata.org/entity/> ");
 
-
     negativeCandidateQuery.append("SELECT DISTINCT ?subject ?object ");
-    if (this.graphIri != null && graphIri.length() > 0)
+    if (this.graphIri != null && graphIri.length() > 0) {
       negativeCandidateQuery.append(" FROM ").append(this.graphIri);
+    }
 
-    negativeCandidateQuery.append(" WHERE {");
+    negativeCandidateQuery.append(" WHERE {")
+            .append(" ?subject <" + typePrefix + "> ?subjectType . ")
+            .append(" ?object <" + typePrefix + "> ?objectType . ");
+
     // Iterate through each combination of types
-
-    negativeCandidateQuery.append("   ?subject <" +typePrefix +"> ?subjectType . " +
-            " ?object <" + typePrefix +"> ?objectType . " +
-            " FILTER (?subjectType IN (<" + subjectType1 + ">, <" + subjectType2 + ">)) " +
-            " FILTER (?objectType IN (<" + objectType1 + ">, <" + objectType2 + ">))");
-
-
-
-    // Include both subject and object functionality if neither is constrained
     if (!subjectFunction && !objectFunction) {
-      negativeCandidateQuery.append(" {{?subject <" + targetRelation + "> ?realObject.} UNION ")
-              .append(" {?realSubject <" + targetRelation + "> ?object.}} ");
+      negativeCandidateQuery.append(" {{?subject ?targetRelation ?realObject.} UNION ")
+              .append(" {?realSubject ?targetRelation ?object.}} ");
     } else {
-      if (subjectFunction)
-        negativeCandidateQuery.append(" ?subject <" + targetRelation + "> ?realObject. ");
-      if (objectFunction)
-        negativeCandidateQuery.append(" ?realSubject <" + targetRelation + "> ?object. ");
+      if (subjectFunction) {
+        negativeCandidateQuery.append(" ?subject ?targetRelation ?realObject. ");
+      }
+      if (objectFunction) {
+        negativeCandidateQuery.append(" ?realSubject ?targetRelation ?object. ");
+      }
     }
 
-    negativeCandidateQuery.append("  ?subject ?otherRelation ?object. ")
-            // .append("  FILTER (").append(filterRelation.toString()).append(") ")
-            .append("  FILTER (").append(filterNotRelation.toString()).append(") ")
-            .append(differentRelation.toString());
+    negativeCandidateQuery.append(" ?subject ?otherRelation ?object. ")
+            .append(" FILTER (").append(filterNotRelation.toString()).append(") ")
+            .append(" FILTER (?subjectType IN (<" + subjectType1 + ">, <" + subjectType2 + ">)) ")
+            .append(" FILTER (?objectType IN (<" + objectType1 + ">, <" + objectType2 + ">)) ")
+            .append(" FILTER (?otherRelation IN (<" + related1 + ">, <" + related2 + ">)) ")
+            .append(differentRelation.toString())
+            .append("} ");
 
-    negativeCandidateQuery.append("} ");
-//ORDER BY RAND()
     if (includeLimit) {
-      if (this.negativeExampleLimit >= 0)
-        negativeCandidateQuery.append("  LIMIT ").append(this.negativeExampleLimit);
+      if (this.negativeExampleLimit >= 0) {
+        negativeCandidateQuery.append(" LIMIT ").append(this.negativeExampleLimit);
+      }
     }
-
-
-
+    System.out.println("Negative query structured");
     return negativeCandidateQuery.toString();
   }
+
 
 
   public String generateNegativeExampleUnionQuery(final Set<String> relations, final String typeSubject, final String typeObject,
@@ -740,6 +742,7 @@ public abstract class SparqlExecutor {
         filterRelation.append(" || ");
         // filterNotRelation.append(" && ");
       }
+
       differentRelation.append("  FILTER NOT EXISTS {?subject <"+currentRelation+"> ?object.} ");
     }
 

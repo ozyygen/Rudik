@@ -1,0 +1,45 @@
+-------------------------[http://www.wikidata.org/prop/direct/P136]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_16:08:38:868-------------------------
+Number of Nodes: 0
+Number of Edges: 0
+Total time for validation queries: 0.0 seconds.
+Average time for validation queries: NaN seconds.
+Number of validation queries: 0
+Total time for expansion queries: 0.0 seconds.
+Average time for expansion queries: 0.0 seconds.
+Number of expansion queries: 2018
+Positive examples generation time: 0.962 seconds.
+Negative examples generation time: 0.0 seconds.
+Total running time: 2.032 seconds.
+Generation sample examples: null
+Output rules: []
+-------------------------[http://www.wikidata.org/prop/direct/P136]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_16:08:40:900-------------------------
+-------------------------[http://www.wikidata.org/prop/direct/P136]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_16:12:26:159-------------------------
+Number of Nodes: 934
+Number of Edges: 36710
+Total time for validation queries: 43.952 seconds.
+Average time for validation queries: 2.1976 seconds.
+Number of validation queries: 20
+Total time for expansion queries: 39.588 seconds.
+Average time for expansion queries: 0.01963690476190476 seconds.
+Number of expansion queries: 2016
+Positive examples generation time: 0.514 seconds.
+Negative examples generation time: 0.0 seconds.
+Total running time: 33.381 seconds.
+Generation sample examples: null
+Output rules: [http://www.wikidata.org/prop/direct/P136(v0,object) & http://www.wikidata.org/prop/direct/P737(subject,v0), http://www.wikidata.org/prop/direct/P136(v0,object) & http://www.wikidata.org/prop/direct/P264(subject,v0), http://www.wikidata.org/prop/direct/P136(v0,object) & http://www.wikidata.org/prop/direct/P463(subject,v0), http://www.wikidata.org/prop/direct/P136(v0,object) & http://www.wikidata.org/prop/direct/P737(v0,subject), http://www.wikidata.org/prop/direct/P31(v0,object) & http://www.wikidata.org/prop/direct/P136(subject,v0)]
+-------------------------[http://www.wikidata.org/prop/direct/P136]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_16:12:59:540-------------------------
+-------------------------[http://www.wikidata.org/prop/direct/P17]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_16:56:50:018-------------------------
+Number of Nodes: 318
+Number of Edges: 73698
+Total time for validation queries: 4.719 seconds.
+Average time for validation queries: 0.1815 seconds.
+Number of validation queries: 26
+Total time for expansion queries: 10.041 seconds.
+Average time for expansion queries: 0.015400306748466258 seconds.
+Number of expansion queries: 652
+Positive examples generation time: 0.191 seconds.
+Negative examples generation time: 0.0 seconds.
+Total running time: 9.052 seconds.
+Generation sample examples: null
+Output rules: [http://www.wikidata.org/prop/direct/P17(subject,v0) & http://www.wikidata.org/prop/direct/P131(v0,object), http://www.wikidata.org/prop/direct/P30(object,v0) & http://www.wikidata.org/prop/direct/P30(subject,v0)]
+-------------------------[http://www.wikidata.org/prop/direct/P17]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_16:56:59:070-------------------------

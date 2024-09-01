@@ -12,12 +12,7 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.jena.ext.com.google.common.collect.Lists;
 import org.apache.jena.ext.com.google.common.collect.Maps;
 import org.apache.jena.ext.com.google.common.collect.Sets;
-import org.apache.jena.query.Dataset;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ReadWrite;
-import org.apache.jena.query.ResultSet;
+import org.apache.jena.query.*;
 import org.apache.jena.tdb.TDBFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,13 +39,26 @@ public class QueryJenaRDFAPI extends QueryJenaLibrary{
 
 	@Override
 	public ResultSet executeQuery(String sparqlQuery) {
-		dataset.begin(ReadWrite.READ) ;
-		QueryExecution qExec = QueryExecutionFactory.create(sparqlQuery, dataset);
-		this.openResource = qExec;
-		ResultSet results = qExec.execSelect() ;
-		dataset.end();
+		dataset.begin(ReadWrite.READ);
+		QueryExecution qExec = null;
+		ResultSet results = null;
+
+		try {
+			qExec = QueryExecutionFactory.create(sparqlQuery, dataset);
+			this.openResource = qExec; // Store the QueryExecution for later closing
+			results = ResultSetFactory.copyResults(qExec.execSelect()); // Make a copy of the results
+		} catch (Exception e) {
+			LOGGER.error("Error executing SPARQL query: " + e.getMessage(), e);
+		} finally {
+			if (qExec != null) {
+				qExec.close(); // Ensure the QueryExecution is closed
+			}
+			dataset.end(); // End the transaction
+		}
+
 		return results;
 	}
+
 	
 	public static void main(String[] args) throws Exception{
 		ConfigurationFacility.getConfiguration();

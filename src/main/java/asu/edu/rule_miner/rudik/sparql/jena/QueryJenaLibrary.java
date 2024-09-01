@@ -58,7 +58,7 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
 
     if(this.openResource!=null)
       this.openResource.close();
-    final ResultSet results = this.executeQuery(sparqlQuery);
+    final ResultSet results = executeSparqlQuery(sparqlQuery);
 
 
     if(!results.hasNext())
@@ -151,51 +151,65 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
   @Override
   public Set<Pair<String, String>> generateUnionNegativeExamples(
           final Set<String> relations, final String typeSubject, final String typeObject, final boolean subjectFunction, final boolean objectFunction) {
+
+    // Generate the negative candidate query
     final String negativeCandidateQuery =
-            super.generateNegativeExampleUnionQuery_old(relations, typeSubject, typeObject,subjectFunction,objectFunction,true);
-    final Set<Pair<String,String>> negativeExamples = Sets.newHashSet();
-    if(negativeCandidateQuery==null)
+            super.generateNegativeExampleUnionQuery_old(relations, typeSubject, typeObject, subjectFunction, objectFunction, true);
+
+    // Initialize the set to store negative examples
+    final Set<Pair<String, String>> negativeExamples = Sets.newHashSet();
+
+    if (negativeCandidateQuery == null) {
+      LOGGER.warn("Negative candidate query is null. Returning an empty set of negative examples.");
       return negativeExamples;
+    }
 
-    LOGGER.debug("Executing negative candidate query selection '{}' on Sparql Endpoint...",negativeCandidateQuery);
+    LOGGER.debug("Executing negative candidate query selection '{}' on Sparql Endpoint...", negativeCandidateQuery);
+
     final long startTime = System.currentTimeMillis();
-    if(this.openResource!=null)
+
+    if (this.openResource != null) {
       this.openResource.close();
+    }
 
-    //try to execute normal query
     ResultSet results = null;
-    try {
-      results = this.executeQuery(negativeCandidateQuery);
-    } catch (final Exception e) {
-      // Log the full exception including the stack trace
-      LOGGER.debug("Error executing query: " + e.toString(), e);
 
-      // Log the specific exception message if available
+    try {
+      results = executeSparqlQuery(negativeCandidateQuery);
+      LOGGER.debug("Query executed in {} seconds.", (System.currentTimeMillis() - startTime) / 1000.0);
+
+      if (results != null && results.hasNext()) {
+        while (results.hasNext()) {
+          final QuerySolution oneResult = results.next();
+          final String secondResult = oneResult.get("object").toString();
+          final String firstResult = oneResult.get("subject").toString();
+
+          // Add the negative example to the set if it's not already present
+          if (!negativeExamples.contains(Pair.of(secondResult, firstResult))) {
+            final Pair<String, String> negativeExample = Pair.of(firstResult, secondResult);
+            negativeExamples.add(negativeExample);
+          }
+        }
+      } else {
+        LOGGER.warn("ResultSet is empty or null.");
+      }
+    } catch (final Exception e) {
+      LOGGER.error("Error executing query: " +  e.getMessage(), e);
+
       String message = e.getMessage();
       if (message != null) {
-        LOGGER.debug("Exception message: " + message);
+        LOGGER.error("Exception message: " + message);
       }
+    } finally {
+      // Ensure resources are closed properly in the finally block
+      this.closeResources();
     }
 
-    LOGGER.debug("Query executed in {} seconds.",(System.currentTimeMillis()-startTime)/1000.0);
-
-    while(results.hasNext()){
-      final QuerySolution oneResult = results.next();
-      final String secondResult = oneResult.get("object").toString();
-      final String firstResult = oneResult.get("subject").toString();
-      if(!negativeExamples.contains(Pair.of(secondResult, firstResult))){
-        final Pair<String,String> negativeExample =
-                Pair.of(firstResult, secondResult);
-        negativeExamples.add(negativeExample);
-
-      }
-    }
-
-    this.closeResources();
-    LOGGER.debug("{} negative examples retrieved.",negativeExamples.size());
+    LOGGER.debug("{} negative examples retrieved.", negativeExamples.size());
 
     return negativeExamples;
   }
+
 
 
   @Override
@@ -210,7 +224,7 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
     final long startTime = System.currentTimeMillis();
     if(this.openResource!=null)
       this.openResource.close();
-    final ResultSet results = this.executeQuery(positiveCandidateQuery);
+    final ResultSet results = executeSparqlQuery(positiveCandidateQuery);
     LOGGER.debug("Query executed in {} seconds.",(System.currentTimeMillis()-startTime)/1000.0);
 
     while(results.hasNext()){
@@ -239,7 +253,7 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
     final long startTime = System.currentTimeMillis();
     if(this.openResource!=null)
       this.openResource.close();
-    final ResultSet results = this.executeQuery(query);
+    final ResultSet results = executeSparqlQuery(query);
     LOGGER.debug("Query executed in {} seconds.",(System.currentTimeMillis()-startTime)/1000.0);
 
     final Set<Pair<String,String>> examples = Sets.newHashSet();
@@ -441,7 +455,7 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
   @Override
   public Set<String> get_type(final String entity) {
     final String query = "SELECT ?o  FROM <http://dbpedia.org>" + " WHERE {" + "<" +  entity + ">" + " <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> " + " ?o }  ";
-    final ResultSet results = this.executeQuery(query);
+    final ResultSet results = executeSparqlQuery(query);
 
     Set<String> setTypes = Sets.newHashSet();
 
@@ -477,7 +491,7 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
     final long startTime = System.currentTimeMillis();
     if(this.openResource!=null)
       this.openResource.close();
-    final ResultSet results = this.executeQuery(query);
+    final ResultSet results = executeSparqlQuery(query);
     LOGGER.debug("Query executed in {} seconds.",(System.currentTimeMillis()-startTime)/1000.0);
 
     while(results.hasNext()){
@@ -525,7 +539,7 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
       count = count + 1;
       if(this.openResource!=null)
         this.openResource.close();
-      ResultSet results = this.executeQuery(new_query);
+      ResultSet results = executeSparqlQuery(new_query);
       // LOGGER.debug("Query executed in {} seconds.",(System.currentTimeMillis()-startTime)/1000.0);
       if (results.hasNext()) {
         matchingPositiveExamples.add(Pair.of(example.getLeft(), example.getRight()));
@@ -550,11 +564,11 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
       this.openResource.close();
     ResultSet results;
     try {
-      results = this.executeQuery(query);
+      results = executeSparqlQuery(query);
     }
     catch(final Exception e){
       String new_query = query + "  LIMIT 50000 ";
-      results = this.executeQuery(new_query);
+      results = executeSparqlQuery(new_query);
     }
     LOGGER.debug("Query executed in {} seconds.",(System.currentTimeMillis()-startTime)/1000.0);
     int count = 0;
@@ -579,7 +593,7 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
       this.openResource.close();
     ResultSet results;
     try {
-      results = this.executeQuery(query);
+      results = executeSparqlQuery(query);
     }
     catch(final Exception e){
       int countL = 0;
@@ -590,7 +604,7 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
       String right_query = this.generateOneSideRulesCounterPositiveExampleCountQuery(rules, relations, typeSubject, typeObject, "object");
       LOGGER.debug("Executing sparql rule query '{}' on Sparql Endpoint...",left_query);
       LOGGER.debug("Executing sparql rule query '{}' on Sparql Endpoint...",right_query);
-      ResultSet left_result = this.executeQuery(left_query);
+      ResultSet left_result = executeSparqlQuery(left_query);
       Set<String> subjectSet = new HashSet<>();
       LOGGER.debug("Query executed in {} seconds.",(System.currentTimeMillis()-startTime)/1000.0);
       while(left_result.hasNext()){
@@ -600,7 +614,7 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
         subjectSet.add(subject);
       }
       this.closeResources();
-      ResultSet right_result = this.executeQuery(right_query);
+      ResultSet right_result = executeSparqlQuery(right_query);
       Set<String> objectSet = new HashSet<>();
       LOGGER.debug("Query executed in {} seconds.",(System.currentTimeMillis()-startTime)/1000.0);
       while(right_result.hasNext()){
@@ -647,7 +661,7 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
     final long startTime = System.currentTimeMillis();
     if(this.openResource!=null)
       this.openResource.close();
-    final ResultSet results = this.executeQuery(query);
+    final ResultSet results = executeSparqlQuery(query);
     LOGGER.debug("Query executed in {} seconds.",(System.currentTimeMillis()-startTime)/1000.0);
     Set<String> allPredicates = Sets.newHashSet();
     while(results.hasNext()){
@@ -679,7 +693,7 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
     final long startTime = System.currentTimeMillis();
     if(this.openResource!=null)
       this.openResource.close();
-    final ResultSet results = this.executeQuery(query);
+    final ResultSet results = executeSparqlQuery(query);
     LOGGER.debug("Query executed in {} seconds.",(System.currentTimeMillis()-startTime)/1000.0);
     //types ordered by popularity
     while(results.hasNext()){
@@ -703,7 +717,7 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
     LOGGER.debug("Executing sparql rule query '{}' on Sparql Endpoint...",inputQuery);
     if(this.openResource!=null)
       this.openResource.close();
-    final ResultSet results = this.executeQuery(inputQuery);
+    final ResultSet results = executeSparqlQuery(inputQuery);
 
     int result = -1;
     final List<String> resultsVariable = results.getResultVars();
@@ -772,7 +786,7 @@ public abstract class QueryJenaLibrary extends SparqlExecutor {
             this.openResource.close();
 
           try{
-            final ResultSet results = this.executeQuery(sparqlQuery);
+            final ResultSet results = executeSparqlQuery(sparqlQuery);
 
             if(!results.hasNext())
               LOGGER.debug("Query '{}' returned an empty result!",sparqlQuery);

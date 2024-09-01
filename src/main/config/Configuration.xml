@@ -23,7 +23,7 @@
 
 			<class>asu.edu.rule_miner.rudik.sparql.jena.remote.QuerySparqlRemoteEndpoint</class>
 			<parameters>
-				<sparql_endpoint>http://ontotext:7200/repositories/personWikidata</sparql_endpoint>
+				<sparql_endpoint>http://localhost:7200/repositories/personWikidata</sparql_endpoint>
 			</parameters>
 
 			<graph_iri></graph_iri>
