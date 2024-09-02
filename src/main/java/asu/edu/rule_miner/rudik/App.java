@@ -33,9 +33,9 @@ public class App {
 			LOGGER.info("Loaded configuration: {}", config);
 
 			// Extract configurations
-			String typeSubject = "http://www.wikidata.org/entity/Q1549591"; // Fixed typeSubject
-			String typeObject = "http://www.wikidata.org/entity/Q3624078"; // Fixed typeObject
-			Set<String> relations = Sets.newHashSet("http://www.wikidata.org/prop/direct/P17");
+			String typeSubject = "http://www.wikidata.org/entity/Q5"; // Fixed typeSubject
+			String typeObject = "http://www.wikidata.org/entity/Q34770"; // Fixed typeObject
+			Set<String> relations = Sets.newHashSet("http://www.wikidata.org/prop/direct/P1412");
 
 			LOGGER.info("Using SPARQL endpoint: {}", config.getString("naive.sparql.parameters.sparql_endpoint"));
 			LOGGER.info("Using graph IRI: {}", config.getString("naive.sparql.graph_iri"));

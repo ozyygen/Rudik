@@ -43,3 +43,123 @@ Total running time: 9.052 seconds.
 Generation sample examples: null
 Output rules: [http://www.wikidata.org/prop/direct/P17(subject,v0) & http://www.wikidata.org/prop/direct/P131(v0,object), http://www.wikidata.org/prop/direct/P30(object,v0) & http://www.wikidata.org/prop/direct/P30(subject,v0)]
 -------------------------[http://www.wikidata.org/prop/direct/P17]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_16:56:59:070-------------------------
+-------------------------[http://www.wikidata.org/prop/direct/P17]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_17:12:28:970-------------------------
+Number of Nodes: 318
+Number of Edges: 73698
+Total time for validation queries: 41.749 seconds.
+Average time for validation queries: 1.6057307692307692 seconds.
+Number of validation queries: 26
+Total time for expansion queries: 10.242 seconds.
+Average time for expansion queries: 0.015660550458715596 seconds.
+Number of expansion queries: 654
+Positive examples generation time: 0.101 seconds.
+Negative examples generation time: 0.0 seconds.
+Total running time: 6.975 seconds.
+Generation sample examples: null
+Output rules: [http://www.wikidata.org/prop/direct/P27(v0,object) & http://www.wikidata.org/prop/direct/P19(v0,subject)]
+-------------------------[http://www.wikidata.org/prop/direct/P17]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_17:12:35:945-------------------------
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_17:34:56:867-------------------------
+Number of Nodes: 1018
+Number of Edges: 52794
+Total time for validation queries: 0.726 seconds.
+Average time for validation queries: 0.1815 seconds.
+Number of validation queries: 4
+Total time for expansion queries: 21.792 seconds.
+Average time for expansion queries: 0.010640625 seconds.
+Number of expansion queries: 2048
+Positive examples generation time: 0.291 seconds.
+Negative examples generation time: 0.0 seconds.
+Total running time: 13.426 seconds.
+Generation sample examples: null
+Output rules: [http://www.wikidata.org/prop/direct/P37(v0,object) & http://www.wikidata.org/prop/direct/P19(subject,v0)]
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_17:35:10:293-------------------------
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_17:40:26:190-------------------------
+Number of Nodes: 1011
+Number of Edges: 52896
+Total time for validation queries: 0.774 seconds.
+Average time for validation queries: 0.1935 seconds.
+Number of validation queries: 4
+Total time for expansion queries: 21.771 seconds.
+Average time for expansion queries: 0.01070353982300885 seconds.
+Number of expansion queries: 2034
+Positive examples generation time: 0.325 seconds.
+Negative examples generation time: 0.0 seconds.
+Total running time: 13.569 seconds.
+Generation sample examples: null
+Output rules: [http://www.wikidata.org/prop/direct/P37(v0,object) & http://www.wikidata.org/prop/direct/P19(subject,v0)]
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_17:40:39:759-------------------------
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_17:42:38:301-------------------------
+Number of Nodes: 1013
+Number of Edges: 52544
+Total time for validation queries: 0.703 seconds.
+Average time for validation queries: 0.17575 seconds.
+Number of validation queries: 4
+Total time for expansion queries: 16.012 seconds.
+Average time for expansion queries: 0.007856722276741904 seconds.
+Number of expansion queries: 2038
+Positive examples generation time: 0.183 seconds.
+Negative examples generation time: 0.0 seconds.
+Total running time: 10.274 seconds.
+Generation sample examples: null
+Output rules: [http://www.wikidata.org/prop/direct/P37(v0,object) & http://www.wikidata.org/prop/direct/P19(subject,v0)]
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_17:42:48:575-------------------------
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_17:44:31:789-------------------------
+Number of Nodes: 1015
+Number of Edges: 53008
+Total time for validation queries: 0.0 seconds.
+Average time for validation queries: NaN seconds.
+Number of validation queries: 0
+Total time for expansion queries: 19.085 seconds.
+Average time for expansion queries: 0.00938298918387414 seconds.
+Number of expansion queries: 2034
+Positive examples generation time: 0.225 seconds.
+Negative examples generation time: 0.0 seconds.
+Total running time: 10.116 seconds.
+Generation sample examples: null
+Output rules: []
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_17:44:41:905-------------------------
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_14:16:19:386-------------------------
+Number of Nodes: 1015
+Number of Edges: 53080
+Total time for validation queries: 0.94 seconds.
+Average time for validation queries: 0.235 seconds.
+Number of validation queries: 4
+Total time for expansion queries: 54.994 seconds.
+Average time for expansion queries: 0.012843063988790284 seconds.
+Number of expansion queries: 4282
+Positive examples generation time: 0.22 seconds.
+Negative examples generation time: 0.0 seconds.
+Total running time: 24.915 seconds.
+Generation sample examples: null
+Output rules: []
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_1000_-1_0.3_0.7_0.1_false_14:16:44:301-------------------------
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_100_-1_0.3_0.6_0.1_false_14:21:08:805-------------------------
+Number of Nodes: 1017
+Number of Edges: 52732
+Total time for validation queries: 0.998 seconds.
+Average time for validation queries: 0.2495 seconds.
+Number of validation queries: 4
+Total time for expansion queries: 25.804 seconds.
+Average time for expansion queries: 0.011199652777777779 seconds.
+Number of expansion queries: 2304
+Positive examples generation time: 0.199 seconds.
+Negative examples generation time: 0.0 seconds.
+Total running time: 15.605 seconds.
+Generation sample examples: null
+Output rules: []
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_100_-1_0.3_0.6_0.1_false_14:21:24:410-------------------------
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_100_-1_0.3_0.6_0.1_false_14:22:41:958-------------------------
+Number of Nodes: 1015
+Number of Edges: 52094
+Total time for validation queries: 0.9 seconds.
+Average time for validation queries: 0.225 seconds.
+Number of validation queries: 4
+Total time for expansion queries: 21.924 seconds.
+Average time for expansion queries: 0.009523892267593396 seconds.
+Number of expansion queries: 2302
+Positive examples generation time: 0.195 seconds.
+Negative examples generation time: 0.0 seconds.
+Total running time: 11.84 seconds.
+Generation sample examples: null
+Output rules: []
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_100_-1_0.3_0.6_0.1_false_14:22:53:798-------------------------

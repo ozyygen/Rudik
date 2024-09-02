@@ -642,39 +642,11 @@ public abstract class SparqlExecutor {
       }
       count++;
     }
-    String relConQuery = "";
-    if (this.prefixQuery != null && this.prefixQuery.size() > 0) {
-      for (final String prefix : this.prefixQuery) {
-        relConQuery += prefix + " ";
-      }
-    }
 
 
-    relConQuery   += "SELECT reduced ?relatedRelation1 ?relatedRelation2 (COUNT(*) AS ?relationCount)\n" +
-            "WHERE {" +
-            "  BIND(<" + targetRelation + "> AS ?targetRelation)\n " +
-            "  ?subject ?targetRelation ?object .\n" +
-            "  ?subject ?relatedRelation1 ?object .\n" +
-            "  ?subject ?relatedRelation2 ?object .\n" +
-            "  FILTER(?relatedRelation1 != ?targetRelation)\n" +
-            "  FILTER(?relatedRelation2 != ?targetRelation)\n" +
-            "  FILTER(?relatedRelation1 != ?relatedRelation2)}\n" +
-            "GROUP BY ?relatedRelation1 ?relatedRelation2\n" +
-            "ORDER BY DESC(?relationCount)\n " +
-            "LIMIT 1";
-    System.out.println("Related connections query started"+relConQuery);
-    // Execute the typeQuery
-    ResultSet resulRelSet = executeSparqlQuery(relConQuery);
-    System.out.println("Related connections query ended");
-    String related1 = null;
-    String related2 = null;
 
-    while (resulRelSet.hasNext()) {
-      QuerySolution solution = resulRelSet.nextSolution();
-      related1 = solution.getResource("relatedRelation1").toString();
-      related2 = solution.getResource("relatedRelation2").toString();
 
-    }
+
     // Construct the main query using the types retrieved
     StringBuilder negativeCandidateQuery = new StringBuilder();
     negativeCandidateQuery.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ")
@@ -688,35 +660,41 @@ public abstract class SparqlExecutor {
     }
 
     negativeCandidateQuery.append(" WHERE {")
-            .append(" ?subject <" + typePrefix + "> ?subjectType . ")
-            .append(" ?object <" + typePrefix + "> ?objectType . ");
+            //.append(" ?subject <" + typePrefix + "> ?subjectType . ")
+            //.append(" ?object <" + typePrefix + "> ?objectType . ")
+            .append(" ?realObject <" + typePrefix + "> ?realObjectType . ")
+            .append(" ?neighObject <" + typePrefix + "> ?neighObjectType . ");
 
     // Iterate through each combination of types
     if (!subjectFunction && !objectFunction) {
-      negativeCandidateQuery.append(" {{?subject ?targetRelation ?realObject.} UNION ")
-              .append(" {?realSubject ?targetRelation ?object.}} ");
+      negativeCandidateQuery.append(" {{?subject <" + targetRelation + "> ?realObject.} UNION ")
+              .append(" {?realSubject <" + targetRelation + "> ?object.}} ");
     } else {
       if (subjectFunction) {
-        negativeCandidateQuery.append(" ?subject ?targetRelation ?realObject. ");
+        negativeCandidateQuery.append(" ?subject <" + targetRelation + "> ?realObject. ");
       }
-      if (objectFunction) {
-        negativeCandidateQuery.append(" ?realSubject ?targetRelation ?object. ");
-      }
+      //if (objectFunction) {
+       // negativeCandidateQuery.append(" ?realSubject ?targetRelation ?object. ");
+      //}
     }
 
     negativeCandidateQuery.append(" ?subject ?otherRelation ?object. ")
+            .append(" ?object ?otherRelation2 ?neighObject. ")
             .append(" FILTER (").append(filterNotRelation.toString()).append(") ")
-            .append(" FILTER (?subjectType IN (<" + subjectType1 + ">, <" + subjectType2 + ">)) ")
-            .append(" FILTER (?objectType IN (<" + objectType1 + ">, <" + objectType2 + ">)) ")
-            .append(" FILTER (?otherRelation IN (<" + related1 + ">, <" + related2 + ">)) ")
-            .append(differentRelation.toString())
+            //.append(" FILTER (?subjectType IN (<" + subjectType1 + ">, <" + subjectType2 + ">)) ")
+            //.append(" FILTER (?objectType IN (<" + objectType1 + ">, <" + objectType2 + ">)) ")
+            .append(" FILTER (?realObjectType IN (<" + objectType1 + ">, <" + objectType2 + ">)) ")
+            .append(" FILTER (?neighObjectType IN (<" + objectType1 + ">, <" + objectType2 + ">)) ")
+            .append(" FILTER Not exists {?subject <" + targetRelation + "> ?neighObject}  ")
+            //.append(differentRelation.toString())
             .append("} ");
-
+    negativeCandidateQuery.append(" order by rand()");
     if (includeLimit) {
       if (this.negativeExampleLimit >= 0) {
         negativeCandidateQuery.append(" LIMIT ").append(this.negativeExampleLimit);
       }
     }
+
     System.out.println("Negative query structured");
     return negativeCandidateQuery.toString();
   }
