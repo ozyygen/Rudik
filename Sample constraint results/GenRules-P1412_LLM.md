@@ -50,13 +50,5 @@
       <td>0</td>
       <td>-</td>
     </tr>
-    <tr>
-      <td>http://www.wikidata.org/prop/direct/P106(subject,http://www.wikidata.org/entity/Q1298934) & http://www.wikidata.org/prop/direct/P1412(subject,object) => empty set</td>
-      <td>Synth-pop as an occupation</td>
-      <td>Sensible</td>
-      <td>Synth-pop is a musical genre, not a profession, making it invalid as an occupation.</td>
-      <td>0</td>
-      <td>-</td>
-    </tr>
   </tbody>
 </table>
