@@ -463,3 +463,18 @@ Total running time: 6.091 seconds.
 Generation sample examples: null
 Output rules: []
 -------------------------[http://www.wikidata.org/prop/direct/P1303]_-1_-1_1000_1000_-1_0.3_0.6_0.1_false_13:43:27:762-------------------------
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_1000_-1_0.3_0.6_0.1_false_14:53:40:734-------------------------
+Number of Nodes: 1013
+Number of Edges: 52552
+Total time for validation queries: 0.81 seconds.
+Average time for validation queries: 0.2025 seconds.
+Number of validation queries: 4
+Total time for expansion queries: 21.278 seconds.
+Average time for expansion queries: 0.004994835680751174 seconds.
+Number of expansion queries: 4260
+Positive examples generation time: 0.265 seconds.
+Negative examples generation time: 0.0 seconds.
+Total running time: 10.288 seconds.
+Generation sample examples: null
+Output rules: [http://www.wikidata.org/prop/direct/P69(subject,v0), http://www.wikidata.org/prop/direct/P119(subject,v0), http://www.wikidata.org/prop/direct/P161(v0,subject), http://www.wikidata.org/prop/direct/P31(subject,v0), http://www.wikidata.org/prop/direct/P737(subject,v0), http://www.wikidata.org/prop/direct/P509(subject,v0), http://www.wikidata.org/prop/direct/P1412(subject,v0), http://www.wikidata.org/prop/direct/P1303(subject,v0), http://www.wikidata.org/prop/direct/P31(object,v0), http://www.wikidata.org/prop/direct/P27(http://www.wikidata.org/entity/Q60486,http://www.wikidata.org/entity/Q188), http://www.wikidata.org/prop/direct/P26(v0,subject), http://www.wikidata.org/prop/direct/P3373(subject,v0), http://www.wikidata.org/prop/direct/P264(subject,v0), http://www.wikidata.org/prop/direct/P101(subject,v0), http://www.wikidata.org/prop/direct/P135(subject,v0), http://www.wikidata.org/prop/direct/P3373(v0,subject), Empty Rule, http://www.wikidata.org/prop/direct/P551(subject,v0), http://www.wikidata.org/prop/direct/P737(v0,subject), http://www.wikidata.org/prop/direct/P26(subject,v0), Empty Rule, http://www.wikidata.org/prop/direct/P108(subject,v0), http://www.wikidata.org/prop/direct/P136(subject,v0), http://www.wikidata.org/prop/direct/P20(subject,v0), http://www.wikidata.org/prop/direct/P451(v0,subject), http://www.wikidata.org/prop/direct/P106(subject,v0), http://www.wikidata.org/prop/direct/P40(subject,v0), http://www.wikidata.org/prop/direct/P40(v0,subject), http://www.wikidata.org/prop/direct/P1050(subject,v0), http://www.wikidata.org/prop/direct/P19(subject,v0), http://www.wikidata.org/prop/direct/P102(subject,v0), http://www.wikidata.org/prop/direct/P172(subject,v0), http://www.wikidata.org/prop/direct/P140(subject,v0), http://www.wikidata.org/prop/direct/P641(subject,v0), http://www.wikidata.org/prop/direct/P27(subject,v0), http://www.wikidata.org/prop/direct/P463(subject,v0), http://www.wikidata.org/prop/direct/P451(subject,v0)]
+-------------------------[http://www.wikidata.org/prop/direct/P1412]_-1_-1_1000_1000_-1_0.3_0.6_0.1_false_14:53:51:022-------------------------

@@ -235,12 +235,12 @@ public class DynamicPruningRuleDiscovery extends HornRuleDiscovery{
       }
       else {
 
-        outputRules.put(currBestRule, Double.valueOf("00"));
+
         currBestRule.dematerialiseRule();
       }
 
       LOGGER.debug("Computing next best rule according to score...");
-
+      outputRules.put(currBestRule, Double.valueOf("00"));
       final Pair<MultipleGraphHornRule<String>,Double> ruleAndscore =
               score.getNextBestRule(negativeHornRules, rule2relativePositiveCoverage,this.maxRuleLen);
       if(ruleAndscore==null){

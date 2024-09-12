@@ -45,8 +45,8 @@ public class App {
 
 			// Extract configurations
 			String typeQuery = "";
-			Set<String> relations = Sets.newHashSet("http://www.wikidata.org/prop/direct/P1303");
-			String targetRelation = "http://www.wikidata.org/prop/direct/P1303";
+			Set<String> relations = Sets.newHashSet("http://www.wikidata.org/prop/direct/P1412");
+			String targetRelation = "http://www.wikidata.org/prop/direct/P1412";
 			String typePrefix = "http://www.wikidata.org/prop/direct/P31";
 			typeQuery +=
 

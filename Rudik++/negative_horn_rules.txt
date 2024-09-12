@@ -1,1 +1,10 @@
+Rule: Empty Rule | Score: 0.0
+Rule: http://www.wikidata.org/prop/direct/P31(subject,v0) | Score: 0.0
+Rule: http://www.wikidata.org/prop/direct/P27(v0,object) | Score: 0.0
+Rule: http://www.wikidata.org/prop/direct/P106(subject,v0) | Score: 0.0
 Rule: http://www.wikidata.org/prop/direct/P31(subject,http://www.wikidata.org/entity/Q5) & http://www.wikidata.org/prop/direct/P31(object,http://www.wikidata.org/entity/Q5) | Score: 0.0
+Rule: http://www.wikidata.org/prop/direct/P1412(subject,v0) | Score: 0.0
+Rule: http://www.wikidata.org/prop/direct/P27(subject,object) | Score: 0.0
+Rule: Empty Rule | Score: 0.0
+Rule: http://www.wikidata.org/prop/direct/P31(object,v0) | Score: 0.0
+Rule: http://www.wikidata.org/prop/direct/P27(subject,v0) | Score: 0.0

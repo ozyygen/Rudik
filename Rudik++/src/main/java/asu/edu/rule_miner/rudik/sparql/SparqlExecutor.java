@@ -604,7 +604,7 @@ public abstract class SparqlExecutor {
       differentRelation.append("  FILTER NOT EXISTS {?subject <" + currentRelation + "> ?object.} ");
     }
 
-    // Initial Query to Fetch Top 2 Types
+    // Initial Query to Fetch Top Types
     String typeQuery = "";
     if (this.prefixQuery != null && this.prefixQuery.size() > 0) {
       for (final String prefix : this.prefixQuery) {
@@ -618,7 +618,7 @@ public abstract class SparqlExecutor {
                     " ?object <" +typePrefix +"> ?objectType. " +
                     " ?subject <" +typePrefix +"> ?subjectType. " +
                     "} GROUP BY ?subjectType ?objectType " +
-                    "ORDER BY DESC(?count) LIMIT 2";
+                    "ORDER BY DESC(?count) LIMIT 1";
 
     System.out.println("Type query started"+typeQuery);
     // Execute the typeQuery
@@ -660,7 +660,7 @@ public abstract class SparqlExecutor {
     }
 
     negativeCandidateQuery.append(" WHERE {")
-            //.append(" ?subject <" + typePrefix + "> ?subjectType . ")
+            .append(" ?subject <" + typePrefix + "> ?subjectType . ")
             //.append(" ?object <" + typePrefix + "> ?objectType . ")
             .append(" ?realObject <" + typePrefix + "> ?realObjectType . ")
             .append(" ?neighObject <" + typePrefix + "> ?neighObjectType . ");
@@ -683,8 +683,9 @@ public abstract class SparqlExecutor {
             .append(" FILTER (").append(filterNotRelation.toString()).append(") ")
             //.append(" FILTER (?subjectType IN (<" + subjectType1 + ">, <" + subjectType2 + ">)) ")
             //.append(" FILTER (?objectType IN (<" + objectType1 + ">, <" + objectType2 + ">)) ")
-            .append(" FILTER (?realObjectType IN (<" + objectType1 + ">, <" + objectType2 + ">)) ")
-            .append(" FILTER (?neighObjectType IN (<" + objectType1 + ">, <" + objectType2 + ">)) ")
+            .append(" FILTER (?realObjectType = <" + objectType1 + ">) ")
+            .append(" FILTER (?subjectType = <" + subjectType1 + ">) ")
+            .append(" FILTER (?neighObjectType = <" + objectType1 + ">) ")
             .append(" FILTER Not exists {?subject <" + targetRelation + "> ?neighObject}  ")
             //.append(differentRelation.toString())
             .append("} ");
