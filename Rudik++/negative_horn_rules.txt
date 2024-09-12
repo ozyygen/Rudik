@@ -1,0 +1,1 @@
+Rule: http://www.wikidata.org/prop/direct/P31(subject,http://www.wikidata.org/entity/Q5) & http://www.wikidata.org/prop/direct/P31(object,http://www.wikidata.org/entity/Q5) | Score: 0.0
