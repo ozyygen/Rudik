@@ -140,10 +140,12 @@ public class App {
 		}
 
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+			int count = 1;
 			for (Map.Entry<HornRule, Double> entry : rules.entrySet()) {
 				HornRule rule = entry.getKey();
 				Double score = entry.getValue();
-				writer.write("Rule: " + rule.toString() + " | Score: " + score);
+				writer.write("Rule " + count+ ": " + rule.toString() );
+				count ++;
 				writer.newLine();
 			}
 		} catch (IOException e) {

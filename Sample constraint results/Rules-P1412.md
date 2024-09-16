@@ -1,86 +1,57 @@
-<table>
-  <thead>
-    <tr>
-      <th>Rule</th>
-      <th>Description</th>
-      <th>Assessment</th>
-      <th>Explanation</th>
-      <th>Erroneous Triple Count</th>
-      <th>Sample Incorrect Wikidata Triple</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>1</strong></td>
-      <td><code>P69(subject, v0) (educated at) & P1412(subject, object) (languages spoken) => empty set</code></td>
-      <td><strong>Not Sensible</strong></td>
-      <td>A person can be educated at an institution and speak a language without contradiction. This rule would incorrectly flag valid triples.</td>
-      <td>-</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td><strong>2</strong></td>
-      <td><code>P31(subject, v0) (instance of) & P1412(subject, object) (languages spoken) => empty set</code></td>
-      <td><strong>Not Sensible</strong></td>
-      <td>Being an instance of a class (e.g., human) and speaking a language are not mutually exclusive. This rule would incorrectly flag valid triples.</td>
-      <td>-</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td><strong>3</strong></td>
-      <td><code>P20(subject, v0) (place of death) & P1412(subject, object) (languages spoken) => empty set</code></td>
-      <td><strong>Sometimes Sensible</strong></td>
-      <td>While someone can have a place of death and speak a language, this rule might make sense in rare cases where language and death circumstances conflict.</td>
-      <td>Manual Inspection - Wrong GPT Labelling</td>
-      <td>Not Sensible</td>
-    </tr>
-    <tr>
-      <td><strong>4</strong></td>
-      <td><code>P106(subject, v0) (occupation) & P1412(subject, object) (languages spoken) => empty set</code></td>
-      <td><strong>Not Sensible</strong></td>
-      <td>Having an occupation and speaking a language are not mutually exclusive and often occur together.</td>
-      <td>-</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td><strong>5</strong></td>
-      <td><code>P31(subject, Q5) (human) & P31(object, Q5) (human) & P1412(subject, object) (languages spoken) => empty set</code></td>
-      <td><strong>Sensible</strong></td>
-      <td>It doesn’t make sense for one human to be the language spoken by another human. This rule correctly flags erroneous triples.</td>
-      <td> >100 </td>
-      <td>Nicolas Defuisseaux (Q15879794) languages spoken, written or signed Fernand Defuisseaux (Q3069112)</td>
-    </tr>
-    <tr>
-      <td><strong>6</strong></td>
-      <td><code>P1412(subject, v0) (languages spoken) & P1412(subject, object) (languages spoken) => empty set</code></td>
-      <td><strong>Sensible</strong></td>
-      <td>A subject cannot speak two instances of the same language or duplicate the same language. This rule correctly flags erroneous triples.</td>
-      <td>Manual Inspection - Wrong GPT Labelling</td>
-      <td>Not Sensible</td>
-    </tr>
-    <tr>
-      <td><strong>7</strong></td>
-      <td><code>P19(subject, v0) (place of birth) & P1412(subject, object) (languages spoken) => empty set</code></td>
-      <td><strong>Not Sensible</strong></td>
-      <td>A person’s place of birth and the language they speak are not mutually exclusive. This rule would incorrectly flag valid triples.</td>
-      <td>-</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td><strong>8</strong></td>
-      <td><code>P31(object, v0) (instance of) & P1412(subject, object) (languages spoken) => empty set</code></td>
-      <td><strong>Sometimes Sensible</strong></td>
-      <td>If the object is not something that can be a spoken language, this rule makes sense, but it could flag valid triples based on object type.</td>
-      <td>0</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td><strong>9</strong></td>
-      <td><code>P27(subject, v0) (nationality) & P1412(subject, object) (languages spoken) => empty set</code></td>
-      <td><strong>Not Sensible</strong></td>
-      <td>Having a nationality and speaking a language are not mutually exclusive. This rule would incorrectly flag valid triples.</td>
-      <td>-</td>
-      <td>-</td>
-    </tr>
-  </tbody>
+<table border="1">
+  <tr>
+    <th>Rule</th>
+    <th>Classification</th>
+    <th>Explanation</th>
+  </tr>
+  <tr>
+    <td>http://www.wikidata.org/prop/direct/P551(subject,v0) & http://www.wikidata.org/prop/direct/P31(subject,Q5) => empty set</td>
+    <td>Sensible</td>
+    <td>Residence (P551) and instance of human (Q5) are unrelated. Humans (Q5) typically have a residence, so this rule is sensible for catching erroneous triples.</td>
+  </tr>
+  <tr>
+    <td>http://www.wikidata.org/prop/direct/P737(v0,subject) & http://www.wikidata.org/prop/direct/P31(subject,Q5) => empty set</td>
+    <td>Not Sensible</td>
+    <td>"Influenced by" (P737) could easily relate to humans (Q5), particularly in cultural or intellectual contexts. This rule may flag valid triples, making it not sensible.</td>
+  </tr>
+  <tr>
+    <td>http://www.wikidata.org/prop/direct/P26(subject,v0) & http://www.wikidata.org/prop/direct/P31(subject,Q5) => empty set</td>
+    <td>Not Sensible</td>
+    <td>Marriage (P26) is a valid relationship for humans (Q5). This rule would flag correct relationships, making it not sensible.</td>
+  </tr>
+  <tr>
+    <td>http://www.wikidata.org/prop/direct/P108(subject,v0) & http://www.wikidata.org/prop/direct/P31(subject,Q5) => empty set</td>
+    <td>Sensible</td>
+    <td>Employer (P108) and being a human (Q5) are unrelated in a direct way. This rule is sensible because it detects incorrect triples linking humans and employers.</td>
+  </tr>
+  <tr>
+    <td>http://www.wikidata.org/prop/direct/P136(subject,v0) & http://www.wikidata.org/prop/direct/P31(subject,Q5) => empty set</td>
+    <td>Sometimes Sensible</td>
+    <td>Genre (P136) can be associated with humans, especially in creative fields. However, there are cases where this rule could catch errors. Sometimes sensible.</td>
+  </tr>
+  <tr>
+    <td>http://www.wikidata.org/prop/direct/P20(subject,v0) & http://www.wikidata.org/prop/direct/P31(subject,Q5) => empty set</td>
+    <td>Sensible</td>
+    <td>Place of death (P20) and being a human (Q5) are unrelated in this rule’s context. This rule sensibly flags invalid triples.</td>
+  </tr>
+  <tr>
+    <td>http://www.wikidata.org/prop/direct/P106(subject,v0) & http://www.wikidata.org/prop/direct/P31(subject,Q5) => empty set</td>
+    <td>Sometimes Sensible</td>
+    <td>Occupation (P106) is a valid relation for humans (Q5), but errors in occupation assignments can occur, making this rule sometimes sensible.</td>
+  </tr>
+  <tr>
+    <td>http://www.wikidata.org/prop/direct/P1412(v0,object) & http://www.wikidata.org/prop/direct/P31(object,Q34770) => empty set</td>
+    <td>Sensible</td>
+    <td>Languages spoken (P1412) should not be confused with the "instance of language" classification (Q34770). This rule sensibly flags incorrect relationships between languages and classification.</td>
+  </tr>
+  <tr>
+    <td>http://www.wikidata.org/prop/direct/P40(v0,subject) & http://www.wikidata.org/prop/direct/P31(subject,Q5) => empty set</td>
+    <td>Not Sensible</td>
+    <td>Parent-child (P40) relationships are valid for humans (Q5). This rule would flag valid relationships, making it not sensible.</td>
+  </tr>
+  <tr>
+    <td>http://www.wikidata.org/prop/direct/P1050(subject,v0) & http://www.wikidata.org/prop/direct/P31(subject,Q5) => empty set</td>
+    <td>Sensible</td>
+    <td>Medical conditions (P1050) and being a human (Q5) are unrelated in this context. This rule sensibly flags incorrect triples.</td>
+  </tr>
 </table>

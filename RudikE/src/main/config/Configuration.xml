@@ -70,9 +70,9 @@
 				</edges>
 				<examples>
 					<!-- Limit positive examples. -1 for unlimited -->
-					<positive>1000</positive>
+					<positive>200</positive>
 					<!-- Limit negative examples. -1 for unlimited -->
-					<negative>1000</negative>
+					<negative>200</negative>
 				</examples>
 			</limits>
 			<include_literals>true</include_literals>

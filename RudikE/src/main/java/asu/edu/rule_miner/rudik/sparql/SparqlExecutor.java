@@ -663,12 +663,12 @@ public abstract class SparqlExecutor {
             .append(" ?subject <" + typePrefix + "> ?subjectType . ")
             //.append(" ?object <" + typePrefix + "> ?objectType . ")
             .append(" ?realObject <" + typePrefix + "> ?realObjectType . ")
-            .append(" ?neighObject <" + typePrefix + "> ?neighObjectType . ");
+            .append(" ?object <" + typePrefix + "> ?neighObjectType . ");
 
     // Iterate through each combination of types
     if (!subjectFunction && !objectFunction) {
       negativeCandidateQuery.append(" {{?subject <" + targetRelation + "> ?realObject.} UNION ")
-              .append(" {?realSubject <" + targetRelation + "> ?object.}} ");
+              .append(" {?realSubject <" + targetRelation + "> ?fObject.}} ");
     } else {
       if (subjectFunction) {
         negativeCandidateQuery.append(" ?subject <" + targetRelation + "> ?realObject. ");
@@ -678,15 +678,15 @@ public abstract class SparqlExecutor {
       //}
     }
 
-    negativeCandidateQuery.append(" ?subject ?otherRelation ?object. ")
-            .append(" ?object ?otherRelation2 ?neighObject. ")
+    negativeCandidateQuery.append(" ?subject ?otherRelation ?fObject. ")
+            .append(" ?fObject ?otherRelation2 ?object. ")
             .append(" FILTER (").append(filterNotRelation.toString()).append(") ")
             //.append(" FILTER (?subjectType IN (<" + subjectType1 + ">, <" + subjectType2 + ">)) ")
             //.append(" FILTER (?objectType IN (<" + objectType1 + ">, <" + objectType2 + ">)) ")
             .append(" FILTER (?realObjectType = <" + objectType1 + ">) ")
             .append(" FILTER (?subjectType = <" + subjectType1 + ">) ")
             .append(" FILTER (?neighObjectType = <" + objectType1 + ">) ")
-            .append(" FILTER Not exists {?subject <" + targetRelation + "> ?neighObject}  ")
+            .append(" FILTER Not exists {?subject <" + targetRelation + "> ?object}  ")
             //.append(differentRelation.toString())
             .append("} ");
     negativeCandidateQuery.append(" order by rand()");
